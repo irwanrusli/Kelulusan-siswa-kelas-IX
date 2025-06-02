@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Pengumuman Kelulusan 2024/2025</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #ffffff);
+      text-align: center;
+      padding: 50px;
+    }
+    input, button {
+      padding: 12px;
+      font-size: 16px;
+      margin: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #0288d1;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0277bd;
+    }
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #ffffff;
+      display: inline-block;
+      box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    }
+    .lulus {
+      color: green;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .tidak-lulus {
+      color: red;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    #downloadBtn {
+      display: none;
+      margin-top: 20px;
+      background-color: #4caf50;
+    }
+    #downloadBtn:hover {
+      background-color: #43a047;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Pengumuman Kelulusan<br>Tahun Pelajaran 2024/2025</h1>
+  <p>Silakan masukkan <strong>Nama</strong> dan <strong>Tanggal Lahir</strong> sesuai data sekolah.</p>
+
+  <input type="text" id="nama" placeholder="Nama Lengkap">
+  <input type="date" id="tglLahir">
+  <br>
+  <button onclick="cekKelulusan()">Cek Kelulusan</button>
+  <button onclick="resetForm()">Ulangi</button>
+  <button id="downloadBtn" onclick="cetakHasil()">Cetak Hasil</button>
+
+  <div id="result"></div>
+
+  <script>
+    const dataSiswa = [
+      { nama: "AKBAR BAHARUDDIN", nisn: "0092907836", tgl: "2009-08-05", rata: 93, status: "LULUS" },
+      { nama: "DIMAS", nisn: "0091972588", tgl: "2009-06-05", rata: 91, status: "LULUS" },
+      { nama: "FAIZ", nisn: "0094028133", tgl: "2009-08-30", rata: 93, status: "LULUS" },
+      { nama: "FITRAH RAMADHAN", nisn: "0108534336", tgl: "2010-06-05", rata: 92, status: "LULUS" },
+      { nama: "HAFIDZA AMELIYA", nisn: "3095697252", tgl: "2009-11-21", rata: 94, status: "LULUS" },
+      { nama: "M. ISLAM NASARUDDIN", nisn: "3102210490", tgl: "2010-01-28", rata: 94, status: "LULUS" },
+      { nama: "MARWA", nisn: "0096476471", tgl: "2009-10-20", rata: 92, status: "LULUS" },
+      { nama: "MUH.ANDY RYVANDY GOA PADANG", nisn: "0102854914", tgl: "2010-01-16", rata: 0, status: "TIDAK LULUS" },
+      { nama: "MUHAMMAD ARLI SYAKUR", nisn: "0107193405", tgl: "2010-03-04", rata: 91, status: "LULUS" },
+      { nama: "NUR MIFTAHUL JANNA", nisn: "0108274344", tgl: "2010-03-26", rata: 95, status: "LULUS" },
+      { nama: "NABILA FANI ZAHRA", nisn: "0102725311", tgl: "2010-02-05", rata: 0, status: "TIDAK LULUS" },
+      { nama: "NUR AULIAH", nisn: "0098227055", tgl: "2009-08-18", rata: 0, status: "TIDAK LULUS" },
+      { nama: "REZKI ADITIYA", nisn: "0083802893", tgl: "2008-09-10", rata: 0, status: "TIDAK LULUS" },
+      { nama: "AYDIN RAMADHAN", nisn: "3090519697", tgl: "2009-09-09", rata: 0, status: "TIDAK LULUS" }
+    ];
+
+    function cekKelulusan() {
+      const namaInput = document.getElementById("nama").value.trim().toUpperCase();
+      const tglInput = document.getElementById("tglLahir").value;
+      const resultDiv = document.getElementById("result");
+      const hasil = dataSiswa.find(s => s.nama === namaInput && s.tgl === tglInput);
+
+      if (hasil) {
+        resultDiv.innerHTML = `
+          <h2>Data Siswa</h2>
+          <p><strong>Nama:</strong> ${hasil.nama}</p>
+          <p><strong>NISN:</strong> ${hasil.nisn}</p>
+          <p><strong>Tanggal Lahir:</strong> ${hasil.tgl}</p>
+          <p><strong>Rata-rata Nilai:</strong> ${hasil.rata}</p>
+          <p class="${hasil.status === 'LULUS' ? 'lulus' : 'tidak-lulus'}">
+            Status: ${hasil.status}
+          </p>
+        `;
+        document.getElementById("downloadBtn").style.display = "inline-block";
+      } else {
+        resultDiv.innerHTML = `<p style="color: red; font-weight: bold;">Data tidak ditemukan.<br>Periksa kembali penulisan nama dan tanggal lahir.</p>`;
+        document.getElementById("downloadBtn").style.display = "none";
+      }
+    }
+
+    function resetForm() {
+      document.getElementById("nama").value = "";
+      document.getElementById("tglLahir").value = "";
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("downloadBtn").style.display = "none";
+    }
+
+    function cetakHasil() {
+      const hasil = document.getElementById("result").innerHTML;
+      const win = window.open("", "Cetak Kelulusan", "width=600,height=400");
+      win.document.write(`
+        <html>
+          <head>
+            <title>Cetak Hasil Kelulusan</title>
+            <style>
+              body { font-family: 'Segoe UI', sans-serif; padding: 20px; text-align: center; }
+              .lulus { color: green; font-weight: bold; font-size: 18px; }
+              .tidak-lulus { color: red; font-weight: bold; font-size: 18px; }
+            </style>
+          </head>
+          <body>
+            ${hasil}
+            <script>window.print();<\/script>
+          </body>
+        </html>
+      `);
+      win.document.close();
+    }
+  </script>
+
+</body>
+</html>
